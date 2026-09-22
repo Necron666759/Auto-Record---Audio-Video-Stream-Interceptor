@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Auto Record - Audio/Video Stream Interceptor
+Comment=Automated recording of Suno/YouTube playback with browser audio isolation
+Exec=AppRun
+Icon=recorder
+Categories=AudioVideo;Recorder;Utility;
+Terminal=false

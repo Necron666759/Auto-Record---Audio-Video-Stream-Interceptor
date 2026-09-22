@@ -1,0 +1,57 @@
+#!/bin/bash
+# AppRun — точка входа AppImage. Никакой интерпретатор Python сюда НЕ
+# зашит: используется системный python3 (со стандартным tkinter),
+# найденный в PATH хост-системы. Это осознанное решение: приложение
+# напрямую общается с системным PulseAudio/PipeWire (через pactl/parec/
+# libpulse-simple) и системным Firefox (firefox-bin) через /proc — эти
+# вещи нельзя "запаковать внутрь" AppImage, они обязаны быть частью
+# хост-системы. Подробный список системных зависимостей — в ReadME.txt.
+
+set -u
+HERE="$(cd "$(dirname "$(readlink -f "${0}")")" && pwd)"
+APP_BIN="$HERE/usr/bin"
+
+# --- 1. Ищем python3 в PATH хоста ---
+PYTHON_BIN="$(command -v python3 || true)"
+if [ -z "$PYTHON_BIN" ]; then
+    echo "ОШИБКА: не найден python3 в PATH." >&2
+    echo "Установите пакет python3 через менеджер пакетов вашего дистрибутива" >&2
+    echo "(подробности — в ReadME.txt / ReadME_EN.txt рядом с AppImage)." >&2
+    exit 1
+fi
+
+# --- 2. Проверяем tkinter (GUI не запустится без него) ---
+if ! "$PYTHON_BIN" -c "import tkinter" >/dev/null 2>&1; then
+    echo "ОШИБКА: в вашем python3 не установлен модуль tkinter." >&2
+    echo "Debian/Ubuntu:  sudo apt install python3-tk" >&2
+    echo "Fedora:         sudo dnf install python3-tkinter" >&2
+    echo "Arch Linux:     sudo pacman -S tk" >&2
+    echo "openSUSE:       sudo zypper install python3-tk" >&2
+    exit 1
+fi
+
+# --- 3. Мягкая проверка остальных внешних утилит: если чего-то нет,
+#        программа всё равно запустится (нужны они не для всех сценариев
+#        сразу), но пользователь сразу увидит явное предупреждение,
+#        а не разбирается в traceback посреди записи. ---
+missing=""
+for bin in ffmpeg pactl parec; do
+    command -v "$bin" >/dev/null 2>&1 || missing="$missing $bin"
+done
+if [ -n "$missing" ]; then
+    echo "ПРЕДУПРЕЖДЕНИЕ: не найдены в PATH:$missing" >&2
+    echo "Без них запись работать не будет. Полный список пакетов по" >&2
+    echo "дистрибутивам — см. ReadME.txt / ReadME_EN.txt рядом с AppImage." >&2
+fi
+if ! command -v firefox-bin >/dev/null 2>&1 && \
+   ! [ -x /usr/lib/firefox/firefox-bin ] && \
+   ! [ -x /usr/lib64/firefox/firefox-bin ] && \
+   ! [ -x /opt/firefox/firefox-bin ]; then
+    echo "ПРЕДУПРЕЖДЕНИЕ: не нашёл firefox-bin по типичным путям." >&2
+    echo "Программе нужен НАСТОЯЩИЙ (не Snap/Flatpak) Firefox — при первом" >&2
+    echo "запуске записи он должен быть открыт хотя бы один раз вручную." >&2
+    echo "Подробности — в ReadME.txt / ReadME_EN.txt." >&2
+fi
+
+# --- 4. Запуск самого GUI ---
+exec "$PYTHON_BIN" "$APP_BIN/recorder_gui.py" "$@"
