@@ -4,11 +4,17 @@ Automated recorder for **Suno** tracks and **YouTube** audio/video, using a dedi
 
 **GUI + CLI · Linux (PulseAudio) · Windows (WASAPI)**
 
-**Audio:** MP3 · AAC · OGG · FLAC
+**Audio:** MP3 · AAC · OGG · FLAC  
 **Video:** MP4 · MKV · WebM · AVI · MOV · FLV · 3GP
 
 <p align="center">
-  <img src="ScreenShots/AVSI_00.png" width="30%">
-  <img src="ScreenShots/AVSI_01.png" width="30%">
-  <img src="ScreenShots/AVSI_02.png" width="30%">
+  <img src="ScreenShots/AVSI_00.png" width="50%">
+</p>
+
+<p align="center">
+  <img src="ScreenShots/AVSI_01.png" width="50%">
+</p>
+
+<p align="center">
+  <img src="ScreenShots/AVSI_02.png" width="50%">
 </p>
