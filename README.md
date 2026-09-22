@@ -6,8 +6,7 @@ Automated recorder for **Suno** tracks and **YouTube** audio/video, using a dedi
 
 **Audio:** MP3 · AAC · OGG · FLAC  
 **Video:** MP4 · MKV · WebM · AVI · MOV · FLV · 3GP
-
-
+<br>
 <p align="center">
   <img src="ScreenShots/AVSI_00.png" width="50%">
 </p>
@@ -19,8 +18,7 @@ Automated recorder for **Suno** tracks and **YouTube** audio/video, using a dedi
 <p align="center">
   <img src="ScreenShots/AVSI_02.png" width="50%">
 </p>
-
-
+<br>
 Donate $5 to buy food for a cat:
 <br>
 USDT(TRC20): TWEmMHfc5DbQuDru8oaXNoXxTNkqYJbsYv<br>
